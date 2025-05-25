@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @NotNull(message = "Choose your gender please")
     private Gender gender;
 
-    @Column(unique = true)
+    @Column
     private String phoneNumber;
 
     @Column(length = 1000)

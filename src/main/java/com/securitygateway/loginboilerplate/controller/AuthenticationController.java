@@ -58,17 +58,10 @@ public class AuthenticationController implements AuthenticationInterface{
         return authenticationService.resetPassword(resetPasswordRequest);
     }
 
-
     @GetMapping("/getRefreshToken")
     public ResponseEntity<?> refreshToken(@RequestParam(name = "refreshToken") String refreshToken) {
         log.info("Refresh token request received");
         return jwtService.generateAccessTokenFromRefreshToken(refreshToken);
-    }
-
-    @PostMapping("/hello")
-    public ResponseEntity<?> hello() {
-        log.info("Hello request received");
-        return new ResponseEntity<>(GeneralAPIResponse.builder().message("This Api is automated, for doing cronJob so that render does not get turned off").build(), HttpStatus.OK);
     }
 
 }

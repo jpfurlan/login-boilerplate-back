@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GeneralAPIResponse {
     private String message;
+    private String status;
 }

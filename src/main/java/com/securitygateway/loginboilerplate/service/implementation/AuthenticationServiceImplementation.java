@@ -54,10 +54,12 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 if (!existingUser.getIsVerified()) {
                     return new ResponseEntity<>(RegisterResponse.builder()
                             .message("User already exists, login to verify your account")
+                            .status("PENDING_VERIFICATION")
                             .build(), HttpStatus.CONFLICT);
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(RegisterResponse.builder()
                             .message("User already registered")
+                            .status("ALREADY_VERIFIED")
                             .build());
                 }
             } else {
@@ -81,11 +83,11 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RegisterResponse.builder()
                     .message("Failed to send OTP email. Please try again later.")
                     .build());
-        }catch(DataIntegrityViolationException ex) {
-            log.info("User already exists with phone number {}", registerRequest.getPhoneNumber());
-            return new ResponseEntity<>(RegisterResponse.builder()
-                    .message("User already exists with this phone number. Please try again with a different phone number.")
-                    .build(), HttpStatus.BAD_REQUEST);
+//        }catch(DataIntegrityViolationException ex) {
+//            log.info("User already exists with phone number {}", registerRequest.getPhoneNumber());
+//            return new ResponseEntity<>(RegisterResponse.builder()
+//                    .message("User already exists with this phone number. Please try again with a different phone number.")
+//                    .build(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
             log.error("Failed to register user with email {}", registerRequest.getEmail(), e);
@@ -168,7 +170,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                             .build(), HttpStatus.INTERNAL_SERVER_ERROR);
                 }
 
-                return new ResponseEntity<>(GeneralAPIResponse.builder().message("User is not verified, we send another OTP code on email").build(), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(GeneralAPIResponse.builder().message("User is not verified, we send another OTP code on email")
+                        .status("PENDING_VERIFICATION")
+                        .build(), HttpStatus.UNAUTHORIZED);
             }
 
             RegisterVerifyResponse jwtToken = jwtService.generateJwtToken(user);

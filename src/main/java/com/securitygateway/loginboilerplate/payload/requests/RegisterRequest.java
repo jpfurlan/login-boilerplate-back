@@ -25,7 +25,6 @@ public class RegisterRequest {
     private String password;
     @NotNull(message ="Please choose your gender")
     private Gender gender;
-    @Pattern(regexp = "^\\+\\d{1,3}\\d{10}$", message = "Invalid phone number, please enter in the format +(code)XXXXXXXXXX")
     private String phoneNumber;
     @NotNull(message = "Please choose a role")
     private Role role;
