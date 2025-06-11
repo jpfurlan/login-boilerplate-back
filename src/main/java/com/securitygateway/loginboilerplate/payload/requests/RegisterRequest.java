@@ -26,6 +26,5 @@ public class RegisterRequest {
     @NotNull(message ="Please choose your gender")
     private Gender gender;
     private String phoneNumber;
-    @NotNull(message = "Please choose a role")
     private Role role;
 }

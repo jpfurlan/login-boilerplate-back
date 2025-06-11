@@ -2,6 +2,7 @@ package com.securitygateway.loginboilerplate.service.implementation;
 
 import com.securitygateway.loginboilerplate.constants.ApplicationConstants;
 import com.securitygateway.loginboilerplate.exceptions.ResourceNotFoundException;
+import com.securitygateway.loginboilerplate.model.Role;
 import com.securitygateway.loginboilerplate.model.User;
 import com.securitygateway.loginboilerplate.model.Username;
 import com.securitygateway.loginboilerplate.payload.requests.*;
@@ -45,6 +46,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
     @Override
     public ResponseEntity<RegisterResponse> registerUser(RegisterRequest registerRequest) {
+        //Somente será possivel colocar usuário ADMIN pelo banco de dados, por segurança
+        registerRequest.setRole(Role.USER);
+
         try {
             log.info("Received request to register user with email {}", registerRequest.getEmail());
             Optional<User> existingUserOpt = userRepository.findByEmail(registerRequest.getEmail().trim().toLowerCase());
